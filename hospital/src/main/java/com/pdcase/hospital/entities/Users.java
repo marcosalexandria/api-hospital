@@ -1,8 +1,7 @@
 package com.pdcase.hospital.entities;
 
 import com.pdcase.hospital.entities.enums.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +22,15 @@ import java.util.List;
 public class Users implements UserDetails {
     //UserDetails idetifica quail eh a classe que vai fazer a altenticacao
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     private String login;
+
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     //  para o spring ver as roles que o usuario tem e liber as classes que for permitido
