@@ -33,6 +33,12 @@ public class Users implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    public Users(String login, String password, UserRole role) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
+
     //  para o spring ver as roles que o usuario tem e liber as classes que for permitido
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
