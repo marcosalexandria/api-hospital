@@ -6,11 +6,13 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.pdcase.hospital.entities.Users;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+@Service
 public class TokenServiceImpl {
 
     //application.properties
@@ -41,7 +43,7 @@ public class TokenServiceImpl {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 
-    private String validaToken(String token){
+    public String validaToken(String token){
         try {
             Algorithm algorithm = Algorithm.HMAC256(segredo);
             return JWT.require(algorithm)

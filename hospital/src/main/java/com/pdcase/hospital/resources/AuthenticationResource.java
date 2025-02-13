@@ -4,7 +4,9 @@ import com.pdcase.hospital.entities.Users;
 import com.pdcase.hospital.entities.dto.AuthenticationDTO;
 import com.pdcase.hospital.entities.dto.RegistrarDTO;
 import com.pdcase.hospital.repositories.UserRepository;
+import com.pdcase.hospital.services.impl.TokenServiceImpl;
 import jakarta.validation.Valid;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,11 +27,16 @@ public class AuthenticationResource {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    TokenServiceImpl service;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
         var userNamePassword = new UsernamePasswordAuthenticationToken(data.getLogin(), data.getPassword()); //diz ao Spring Security que queremos autenticar um usuário com essas credenciais.
         var auth = this.authentication.authenticate(userNamePassword); //verifica se o usuário e senha são válidos:
-        return ResponseEntity.ok().build();
+
+        var token = service.gerarToken((Users) auth.getPrincipal());
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/registrar")
