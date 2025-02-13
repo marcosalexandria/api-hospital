@@ -32,5 +32,16 @@ public class AuthenticationResource {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/registrar")
+    public ResponseEntity registrar(@RequestBody @Valid RegistrarDTO data){
 
+        if(repository.findByLogin(data.getLogin()) != null) return ResponseEntity.badRequest().build();
+
+        String encriptandoPassword = new BCryptPasswordEncoder().encode(data.getPassword()); //cryptografa a senha
+        Users user = new Users(data.getLogin(), encriptandoPassword, data.getRole());
+
+        repository.save(user);
+
+        return ResponseEntity.ok().build();
+    }
 }
