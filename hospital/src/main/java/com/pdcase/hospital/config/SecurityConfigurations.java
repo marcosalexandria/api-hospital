@@ -19,12 +19,14 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+        // Permite que qualquer um acesse /auth/login
         // Todos os metodos POST em /fichas só serao acessados se a role for ADIM
         /// Todas as outras qualquer usuario autenticado vai poder acessar
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/fichas").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
